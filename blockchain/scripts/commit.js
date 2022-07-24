@@ -8,7 +8,7 @@ async function main() {
   await guard
     .connect(account2)
     .Commit(
-      0,
+      config.COUNTER,
       ethers.utils.solidityKeccak256(
         ["address", "string", "string"],
         [account2.address, config.PRIVATE_KEY_CID, "blind"]

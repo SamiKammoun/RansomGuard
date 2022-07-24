@@ -5,7 +5,7 @@ async function main() {
   guard = await Guard.attach(config.CONTRACT_ADDRESS);
   [account0, account1, account2] = await ethers.getSigners();
   console.log("Revealing");
-  await guard.connect(account2).Reveal(0, config.PRIVATE_KEY_CID, "blind");
+  await guard.connect(account2).Reveal(config.COUNTER, config.PRIVATE_KEY_CID, "blind");
 }
 main().catch((error) => {
   console.error(error);

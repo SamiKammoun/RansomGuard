@@ -2,10 +2,10 @@
 pragma solidity ^0.8.9;
 
 contract Guard {
-    uint256 revealSpan = 600;
-    uint256 stakeSpan = 7200;
-    uint256 fee = 100;
-    uint256 contractBalance;
+    uint256 public revealSpan = 600;
+    uint256 public stakeSpan = 7200;
+    uint256 public fee = 100;
+    uint256 public contractBalance;
 
     enum Stage {
         Initial,
