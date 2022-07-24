@@ -22,7 +22,7 @@ contract Guard {
         address User;
         uint256 stakeAmount;
         uint256 stakeTimeStamp;
-        string URI;
+        string cid;
         string PrivateKey;
         bytes32 Commitment;
         uint256 CommitmentTimestamp;
@@ -32,22 +32,22 @@ contract Guard {
     event Revealed(
         address attacker,
         string privateKey,
-        string uri,
+        string cid,
         uint256 counter
     );
     event Staked(
         address user,
         uint256 amount,
         uint256 operationCount,
-        string uri
+        string cid
     );
     event Distributed(address attacker, address user, uint256 amount);
     event KeyVerified(uint256 counter, string key);
     mapping(uint256 => Operation) operations;
     uint256 public counter = 0;
 
-    address checker;
-    address owner;
+    address public checker;
+    address public owner;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Operation not allowed");
@@ -64,7 +64,7 @@ contract Guard {
         owner = msg.sender;
     }
 
-    function Stake(string calldata URI) external payable {
+    function Stake(string calldata cid) external payable {
         require(msg.value > fee);
         operations[counter].User = msg.sender;
         operations[counter].stakeAmount = msg.value;
@@ -72,7 +72,7 @@ contract Guard {
         operations[counter].stage = Stage.Staked;
 
         counter++;
-        emit Staked(msg.sender, msg.value, counter - 1, URI);
+        emit Staked(msg.sender, msg.value, counter - 1, cid);
     }
 
     function unStake(uint256 _counter) external {
@@ -140,7 +140,7 @@ contract Guard {
         emit Revealed(
             operations[_counter].Attacker,
             key,
-            operations[_counter].URI,
+            operations[_counter].cid,
             _counter
         );
     }
