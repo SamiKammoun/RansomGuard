@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 contract Guard {
     uint256 revealSpan = 600;
     uint256 stakeSpan = 7200;
-    uint256 fee = 1 ether;
+    uint256 fee = 100;
     uint256 contractBalance;
 
     enum Stage {
@@ -23,7 +23,7 @@ contract Guard {
         uint256 stakeAmount;
         uint256 stakeTimeStamp;
         string cid;
-        string PrivateKey;
+        string PrivateKey; //cid of privatekey file
         bytes32 Commitment;
         uint256 CommitmentTimestamp;
     }
@@ -42,7 +42,7 @@ contract Guard {
         string cid
     );
     event Distributed(address attacker, address user, uint256 amount);
-    event KeyVerified(uint256 counter, string key);
+    event KeyVerified(uint256 counter, string keyCID);
     mapping(uint256 => Operation) operations;
     uint256 public counter = 0;
 
@@ -70,6 +70,7 @@ contract Guard {
         operations[counter].stakeAmount = msg.value;
         operations[counter].stakeTimeStamp = block.timestamp;
         operations[counter].stage = Stage.Staked;
+        operations[counter].cid = cid;
 
         counter++;
         emit Staked(msg.sender, msg.value, counter - 1, cid);
@@ -111,7 +112,7 @@ contract Guard {
 
     function Reveal(
         uint256 _counter,
-        string calldata key,
+        string calldata keyCID,
         string calldata blindingFactor
     ) external {
         require(
@@ -129,17 +130,17 @@ contract Guard {
             "Reveal period passed"
         );
         require(
-            keccak256(abi.encodePacked(msg.sender, key, blindingFactor)) ==
+            keccak256(abi.encodePacked(msg.sender, keyCID, blindingFactor)) ==
                 operations[_counter].Commitment,
             "invalid hash"
         );
 
         operations[_counter].stage = Stage.KeyReveal;
-        operations[_counter].PrivateKey = key;
+        operations[_counter].PrivateKey = keyCID;
 
         emit Revealed(
             operations[_counter].Attacker,
-            key,
+            keyCID,
             operations[_counter].cid,
             _counter
         );
