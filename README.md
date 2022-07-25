@@ -21,6 +21,9 @@ RansomGuard is a solution to pay a ransomware attacker in a decentralized way.
   - [ ] Distributing the Ransom Network ( this could be done by making verifier nodes stake a certain token and slashing them when they do something malicious)
   - [ ] Implementing more decryption/encryption algorithms
 
+### [Smart contract verified on Mumbai](https://mumbai.polygonscan.com/address/0xFfb3c5a5CBa2705DfC8C88D8DbDDa7BBCb5Deaa6)
+
+### [HackFS submission](https://ethglobal.com/showcase/ransom-network-v5u0u)
 
 ### Credits
 
